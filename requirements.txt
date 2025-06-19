@@ -1,0 +1,16 @@
+redis
+boto3
+pytest
+pytest-asyncio
+testcontainers
+localstack-client
+ruff
+fastapi
+pydantic[dotenv]
+pydantic-settings
+uvicorn[standard]
+httpx
+faker
+seqlog
+anyio
+asgi-lifespan

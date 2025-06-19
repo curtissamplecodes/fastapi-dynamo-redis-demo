@@ -1,0 +1,9 @@
+[tool.ruff]
+line-length = 100
+target-version = "py311"  # Or your actual Python version
+lint.select = ["E", "F", "B", "I", "N"]
+lint.ignore = ["E501", "B008"]  # Optional: ignores line length, using FastAPI so ignore the second one
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"

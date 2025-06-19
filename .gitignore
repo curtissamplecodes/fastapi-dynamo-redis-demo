@@ -1,0 +1,62 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Test and lint caches
+.pytest_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+env/
+venv/
+
+# Editor settings
+.vscode/
+.idea/
+
+# Terraform state and cache
+infra/.terraform/
+infra/terraform.tfstate
+infra/terraform.tfstate.backup
+infra/.terraform.lock.hcl
+
+# LocalStack
+infra/localstack/.localstack/
+infra/localstack/volume/
+
+# Logs and dumps
+*.log
+*.out
+*.bak
+
+# Secrets and env files
+.env
+.env.*  # includes .env.local etc.
+# NOTE: secrets.tf is intentionally included, but should NEVER contain real secrets
+
+# Build artifacts
+*.egg-info/
+.eggs/
+dist/
+build/
+*.whl
+*.spec
+
+# Coverage / test output
+htmlcov/
+.coverage
+.coverage.*
+.cache/
+nosetests.xml
+coverage.xml
+
+# MyPy, Pytype, etc.
+.mypy_cache/
+.pytype/
+.pyre/
+
+# Misc
+.DS_Store
+Thumbs.db
