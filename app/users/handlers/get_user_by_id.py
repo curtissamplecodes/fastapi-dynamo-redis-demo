@@ -1,3 +1,4 @@
+from asyncio import to_thread
 from botocore.exceptions import ClientError
 from redis.exceptions import RedisError
 
@@ -30,7 +31,7 @@ class GetUserByIdHandler(BaseHandler):
     
     async def _fallback_to_dynamo_and_cache(self, user_id: str, redis_key: str) -> User | None:
         try:
-            response = self.dynamodb_client.get_item(
+            response = await to_thread(self.dynamodb_client.get_item,
                 TableName=self.settings.USERS_TABLE_NAME,
                 Key={"id": {"S": user_id}}
             )

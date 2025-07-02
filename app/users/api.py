@@ -41,7 +41,7 @@ async def create_user(user_request: CreateUserRequest,
     handler = CreateUserHandler(settings, client)
     
     try:
-        handler.create(user)
+        await handler.create(user)
         return CreateUserResponse(id=user.id)
     except ClientError as ce:
         logger.error(f"DynamoDB client error: {ce.response['Error']['Message']}", exc_info=True)
