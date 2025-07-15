@@ -2,10 +2,7 @@ from botocore.exceptions import ClientError
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.auth import verify_api_key
-from app.dependencies import (
-    get_create_user_handler,
-    get_get_user_by_id_handler,
-)
+from app.dependencies import get_create_user_handler, get_get_user_by_id_handler
 from app.logging import logger, timing_logger
 from app.users.handlers.create_user import CreateUserHandler
 from app.users.handlers.get_user_by_id import GetUserByIdHandler
