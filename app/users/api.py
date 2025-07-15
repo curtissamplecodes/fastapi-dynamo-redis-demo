@@ -1,5 +1,5 @@
 from botocore.exceptions import ClientError
-from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi import APIRouter, Depends, HTTPException, Response, status
 
 from app.auth import verify_api_key
 from app.dependencies import get_create_user_handler, get_get_user_by_id_handler
@@ -15,11 +15,13 @@ router = APIRouter(prefix="/users", tags=["users"], dependencies=[Depends(verify
 
 @router.get("/{user_id}", response_model=User)
 @timing_logger("get_user_by_id")
-async def get_user_by_id(user_id: str, handler: GetUserByIdHandler = Depends(get_get_user_by_id_handler)) -> User:
+async def get_user_by_id(user_id: str, response: Response, handler: GetUserByIdHandler = Depends(get_get_user_by_id_handler)) -> User:
     try:
-        if not (user := await handler.get(user_id)):
+        if not (result := await handler.get(user_id)):
             raise HTTPException(status_code=404, detail="User not found")
-        return user
+        
+        response.headers["X-Cache-Hit"] = result.cache_hit_header
+        return result.user
     except ClientError as ce:
         logger.error(f"DynamoDB client error: {ce.response['Error']['Message']}", exc_info=True)
         raise HTTPException(status_code=500, detail="Failed to get user") from ce
