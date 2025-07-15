@@ -6,17 +6,21 @@ from redis.exceptions import RedisError
 from app.logging import logger
 from app.users.handlers.base_handler import BaseHandler
 from app.users.models import User
+from app.users.results import GetUserResult
 from app.utils.cache_keys import redis_cache_key
 
 
 class GetUserByIdHandler(BaseHandler):
-    async def get(self, user_id: str) -> User | None:
+    async def get(self, user_id: str) -> GetUserResult | None:
         redis_key = redis_cache_key("user", user_id)
 
         if user := await self._try_redis(user_id, redis_key):
-            return user
+            return GetUserResult(user, is_cache_hit=True)
         
-        return await self._fallback_to_dynamo_and_cache(user_id, redis_key)
+        if user:= await self._fallback_to_dynamo_and_cache(user_id, redis_key):
+            return GetUserResult(user)
+        
+        return None
         
     async def _try_redis(self, user_id: str, key: str) -> User | None:
         try:

@@ -49,13 +49,13 @@ async def test_get_user_by_id_cache_aside(test_client: AsyncClient, dynamodb_cli
         # comes from Dynamo
         first_response = await test_client.get(f"/users/{user_id}")
         assert first_response.status_code == 200
-
-        cached = await redis_client.get(redis_key)
-        assert cached is not None
+        assert first_response.headers.get("X-Cache-Hit") == "false"
 
         # comes from Redis
         second_response = await test_client.get(f"/users/{user_id}")
         assert second_response.status_code == 200
+        assert second_response.headers.get("X-Cache-Hit") == "true"
+        
         assert second_response.json() == first_response.json()
     finally:
         await _clear_user(user_id, dynamodb_client, redis_client)
