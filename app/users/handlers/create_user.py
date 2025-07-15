@@ -1,4 +1,5 @@
 from asyncio import to_thread
+
 from botocore.exceptions import ClientError
 
 from app.users.handlers.base_handler import BaseHandler
